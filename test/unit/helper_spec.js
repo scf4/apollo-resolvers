@@ -1,10 +1,39 @@
 import { expect } from 'chai';
 
 import {
-  combineResolvers
+  combineResolvers,
+  composeResolvers,
 } from '../../src/helper';
 
+import {
+  createResolver,
+} from '../../src/resolver';
+
 describe('(unit) src/helper.js', () => {
+  describe('composeResolvers', () => {
+    it('returns a composed list of resolvers', () => {
+      // const order = [];
+      // const firstBaseResolver = createResolver(() => {
+      //   order.push('first');
+      // });
+      //
+      // const myResolver = () => {
+      //   order.push('myResolver');
+      // };
+      // const composed = composeResolvers([
+      //   myResolver,
+      // ], firstBaseResolver, secondBaseResolver);
+
+      const firstBaseResolver = createResolver(() => {});
+
+      const secondBaseResolver = firstBaseResolver.createResolver(
+        () => { throw new Error('second!'); }
+      );
+      const myComposedResolver = secondBaseResolver.createResolver(()=>null);
+      myComposedResolver();
+
+    });
+  });
   describe('combineResolvers', () => {
     it('returns a combined hash of resolvers', () => {
       const hash1 = {
